@@ -4,17 +4,13 @@ const jwt = require('jsonwebtoken');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const User = require('../models/user');
-const { BadRequestError, ConflictError, UnauthorizedError } = require('../errors/index');
+const { BadRequestError, ConflictError } = require('../errors/index');
 
 const getUser = (req, res, next) => {
   const id = req.user._id;
-
   User.findById(id)
     .then((user) => {
       res.status(200).send(user);
-    })
-    .catch((err) => {
-      res.send(err);
     })
     .catch(next);
 };
@@ -23,7 +19,6 @@ const updateUser = (req, res, next) => {
   const id = req.user._id;
   const newName = req.body.name;
   const newEmail = req.body.email;
-
   User.findOneAndUpdate(
     { _id: id },
     { name: newName, email: newEmail },
@@ -36,6 +31,9 @@ const updateUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(err.message);
       }
+      if (err.name === 'MongoError' && err.code === 11000) {
+        throw new ConflictError('Пользователь с таким email уже существует');
+      } else next(err);
     })
     .catch(next);
 };
@@ -49,9 +47,6 @@ const login = (req, res, next) => {
       );
       res.send({ token });
     })
-    .catch((err) => {
-      throw new UnauthorizedError(err.message);
-    })
     .catch(next);
 };
 
@@ -64,7 +59,7 @@ const createUser = (req, res, next) => {
       name: req.body.name,
     }))
     .catch((err) => {
-      if (err.code === 11000) {
+      if (err.name === 'MongoError' && err.code === 11000) {
         throw new ConflictError('Пользователь с таким email уже существует');
       } else next(err);
     })

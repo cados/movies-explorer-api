@@ -26,16 +26,14 @@ const validateUpdateUser = celebrate({
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email().message('Не верный формат email'),
-    password: Joi.string().required().min(8).max(30)
-      .messages({ 'string.min': 'Минимальная длина пароля - 8' }),
+    password: Joi.string().required(),
   }),
 });
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email().message('Не верный формат email'),
-    password: Joi.string().required().min(8).max(30)
-      .messages({ 'string.min': 'Минимальная длина пароля - 8' }),
+    password: Joi.string().required(),
     name: Joi.string().required().min(2).max(30)
       .messages({ 'string.min': 'Минимальная длина "name" - 2' }),
   }),
@@ -43,11 +41,11 @@ const validateCreateUser = celebrate({
 
 const validateCreateMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(2).max(100),
-    director: Joi.string().required().min(2).max(100),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.string().required().min(2).max(4),
-    description: Joi.string().required().min(2).max(5000),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
     nameRU: Joi.string().required().min(2).max(100),
     nameEN: Joi.string().required().min(2).max(100),
     image: Joi.string().required().custom(validateUrl),

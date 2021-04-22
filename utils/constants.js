@@ -10,4 +10,6 @@ const dbSetting = {
   useUnifiedTopology: true,
 };
 
-module.exports = { limiterSetting, dbSetting };
+const mongodbUrl = 'DB_CONNECT=mongodb://localhost:27017/bitfilmsdb';
+
+module.exports = { limiterSetting, dbSetting, mongodbUrl };

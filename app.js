@@ -10,9 +10,9 @@ const bodyParser = require('body-parser');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
-const { limiterSetting, dbSetting } = require('./utils/constants');
+const { limiterSetting, dbSetting, mongodbUrl } = require('./utils/constants');
 
-const { PORT = 3000, DB_CONNECT = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000, DB_CONNECT = mongodbUrl } = process.env;
 
 mongoose.connect(DB_CONNECT, dbSetting);
 

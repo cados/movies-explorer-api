@@ -28,7 +28,6 @@ const createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-
   Movie.create({ owner, ...req.body })
     .then(() => {
       res.status(201).send({
@@ -48,9 +47,10 @@ const createMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(err.message);
-      } else if (err.code === 11000) {
-        throw new ConflictError(err.message);
       }
+      if (err.code === 11000) {
+        throw new ConflictError(err.message);
+      } else next(err);
     })
     .catch(next);
 };
@@ -61,7 +61,7 @@ const deleteMovie = (req, res, next) => {
   Movie.findById(movieId).select('+owner')
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Запрашиваемый ресурс не найден');
+        throw new NotFoundError('Нет фильма с таким id');
       }
       if (movie.owner.toString() !== owner) {
         throw new ForbiddenError('Нет доступа к удалению фильма');
