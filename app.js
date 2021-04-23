@@ -16,14 +16,13 @@ const { PORT = 3000, DB_CONNECT = mongodbUrl } = process.env;
 
 mongoose.connect(DB_CONNECT, dbSetting);
 
-app.use(rateLimit(limiterSetting));
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
-
+app.use(rateLimit(limiterSetting));
 app.use('/', router);
 
 app.use(errorLogger);
