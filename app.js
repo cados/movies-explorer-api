@@ -16,7 +16,13 @@ const { PORT = 3000, DB_CONNECT = mongodbUrl } = process.env;
 
 mongoose.connect(DB_CONNECT, dbSetting);
 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'PUT', 'POST', 'HEAD', 'PATCH', 'DELETE'],
+
+};
+
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,4 +35,4 @@ app.use(errorLogger);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => { });
