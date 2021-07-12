@@ -17,7 +17,10 @@ const { PORT = 3000, DB_CONNECT = mongodbUrl } = process.env;
 mongoose.connect(DB_CONNECT, dbSetting);
 
 const corsOptions = {
-  origin: '*',
+  origin: [
+    'https://api.cados-cinema.students.nomoredomains.icu',
+    'https://www.api.cados-cinema.students.nomoredomains.icu',
+  ],
   methods: ['GET', 'PUT', 'POST', 'HEAD', 'PATCH', 'DELETE'],
 
 };
