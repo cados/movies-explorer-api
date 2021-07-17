@@ -28,21 +28,22 @@ const createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-  Movie.create({ owner, ...req.body })
-    .then(() => {
-      res.status(201).send({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailer,
-        thumbnail,
-        movieId,
-        nameRU,
-        nameEN,
-      });
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner,
+  })
+    .then((movie) => {
+      res.status(201).send(movie);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
